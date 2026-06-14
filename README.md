@@ -76,10 +76,6 @@ store-ledger/
 - Recent transactions chart (Recharts)
 - Top debtors list
 
----
-
-## ⚙️ Setup Instructions
-
 ### Prerequisites
 - Node.js 18+
 - MongoDB (local install OR a free MongoDB Atlas cluster)
@@ -90,18 +86,6 @@ store-ledger/
 cd backend
 npm install
 ```
-
-Open `backend/.env` and fill in **every** value marked `<FILL_THIS>`:
-
-| Variable | How to get it |
-|---|---|
-| `MONGO_URI` | Local: `mongodb://localhost:27017/store_ledger` or your Atlas connection string |
-| `JWT_SECRET` / `JWT_REFRESH_SECRET` | Run: `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"` (run twice for two different secrets) |
-| `OWNER_EMAIL` | The ONLY email allowed to register/login — use your real email |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials → OAuth Client ID (Web). Add redirect URI: `http://localhost:5000/api/auth/google/callback` |
-| `FACEBOOK_APP_ID` / `FACEBOOK_APP_SECRET` | [Facebook Developers](https://developers.facebook.com/) → Create App → Facebook Login. Add redirect URI: `http://localhost:5000/api/auth/facebook/callback` |
-| `EMAIL_USER` / `EMAIL_PASS` / `EMAIL_FROM` | For Gmail: enable 2FA on your Google account, then create an **App Password** (16 chars) — use that as `EMAIL_PASS` |
-| `ENCRYPTION_KEY` | Any random 32-character string |
 
 Then run:
 
@@ -125,14 +109,6 @@ Then run:
 npm run dev      # starts on http://localhost:5173
 ```
 
-### 3. First-Time Use
-1. Go to `http://localhost:5173/register`
-2. Register using the **exact email** set as `OWNER_EMAIL` in `backend/.env`
-3. Check your email for the verification link → click it
-4. Log in
-5. (Recommended) Go to **Settings → Set Up MFA** and scan the QR code with
-   Google Authenticator
-
 ### 4. (Optional) Seed Sample Data
 
 After registering, run:
@@ -140,31 +116,6 @@ After registering, run:
 cd backend
 npm run seed
 ```
-This adds 2 sample customers with transactions and 3 inventory items.
-
----
-
-## 🔌 API Overview
-
-All routes are prefixed with `/api`.
-
-| Method | Route | Auth | Description |
-|---|---|---|---|
-| POST | `/auth/register` | — | Register owner (one-time) |
-| POST | `/auth/login` | — | Login (may trigger MFA) |
-| POST | `/auth/mfa/verify` | — | Complete MFA login |
-| GET | `/auth/google`, `/auth/facebook` | — | OAuth login |
-| POST | `/auth/reauth` | 🔒 | Get short-lived re-auth token (for voiding tx) |
-| GET | `/customers` | 🔒 | List/search customers |
-| POST | `/customers` | 🔒 | Create customer |
-| GET | `/customers/:id/due-summary` | 🔒 | Customer + their full ledger |
-| POST | `/transactions` | 🔒 | Create credit/payment transaction |
-| PATCH | `/transactions/:id/void` | 🔒 + re-auth | Void a transaction (audit-logged) |
-| GET | `/transactions/audit-log` | 🔒 | View all voided transactions |
-| GET | `/inventory` | 🔒 | List inventory with status summary |
-| POST | `/inventory` | 🔒 | Add reorder-list item |
-| PATCH | `/inventory/:id/restock` | 🔒 | Increase stock |
-| GET | `/dashboard/stats` | 🔒 | Dashboard summary stats |
 
 ---
 
@@ -187,7 +138,6 @@ All routes are prefixed with `/api`.
 - No automated test suite included yet (consider Jest + Supertest for backend,
   Vitest + React Testing Library for frontend).
 - Currency is hardcoded to ₹ (INR) — change the symbol in the frontend pages if needed.
-- For production: set `NODE_ENV=production`, use HTTPS, set secure cookie flags,
   and restrict CORS `FRONTEND_URL` to your real domain.
 
 ---
@@ -195,7 +145,7 @@ All routes are prefixed with `/api`.
 ## 🐛 Troubleshooting
 
 - **"Access denied. This system is restricted to the owner."** → Your login email
-  doesn't match `OWNER_EMAIL` in `backend/.env`.
+  doesn't match with owner email.
 - **MongoDB connection error** → Check `MONGO_URI` and that MongoDB is running.
 - **OAuth redirect fails** → Make sure the callback URLs registered in Google/Facebook
   developer consoles **exactly match** `GOOGLE_CALLBACK_URL` / `FACEBOOK_CALLBACK_URL`.
