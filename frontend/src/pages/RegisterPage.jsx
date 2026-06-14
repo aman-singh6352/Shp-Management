@@ -64,12 +64,6 @@ export default function RegisterPage() {
             <p className="text-white/40 text-sm">Create your secure owner account</p>
           </div>
 
-          <div className="glass-card p-3 mb-6 border-amber-500/20 bg-amber-500/5">
-            <p className="text-amber-400 text-xs text-center">
-              ⚠️ Access is restricted to the authorized owner email only.
-            </p>
-          </div>
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {[
               { name: "name", label: "Full Name", type: "text", placeholder: "Your name" },
