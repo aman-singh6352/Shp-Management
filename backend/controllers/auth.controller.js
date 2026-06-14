@@ -41,17 +41,9 @@ exports.register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
-    // Single-owner enforcement
-    if (email.toLowerCase() !== process.env.OWNER_EMAIL?.toLowerCase()) {
-      return res.status(403).json({
-        success: false,
-        message: "Registration is restricted to the authorized owner only.",
-      });
-    }
-
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
-      return res.status(409).json({ success: false, message: "Owner account already exists." });
+      return res.status(409).json({ success: false, message: "Account already exists." });
     }
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
