@@ -230,7 +230,7 @@ export default function CustomerDetailPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm text-white/60 mb-1.5 flex items-center gap-1.5">
+              <label className="flex text-sm text-white/60 mb-1.5 items-center gap-1.5">
                 Date & Time <span className="text-white/30 text-xs">(editable / backdate)</span>
               </label>
               <input type="datetime-local" className="input-field" {...register("transactionDate")} />

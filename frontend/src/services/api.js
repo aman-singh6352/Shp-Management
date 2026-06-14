@@ -2,7 +2,7 @@ import axios from "axios";
 import useAuthStore from "../context/authStore";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "https://shop-management-backend-5nci.onrender.com",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "https://shop-management-backend-5nci.onrender.com/api",
   timeout: 15000,
   headers: { "Content-Type": "application/json" },
 });
