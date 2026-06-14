@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    /* Functionality: Maintains border-white/10 */
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  body {
+    @apply font-body bg-surface-950 text-white;
+    background-image: radial-gradient(at 20% 10%, rgba(99, 102, 241, 0.08) 0px, transparent 60%),
+                      radial-gradient(at 80% 90%, rgba(139, 92, 246, 0.05) 0px, transparent 60%);
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    /* Functionality: Maintains bg-white/10 rounded-full */
+    background-color: rgba(255, 255, 255, 0.1);
+    @apply rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    /* Functionality: Maintains bg-white/20 */
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+@layer components {
+  .glass-card {
+    /* Functionality: Maintains backdrop-blur-xl and specific gradient */
+    @apply backdrop-blur-xl rounded-2xl;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:shadow-glow-sm;
+  }
+  .glass-card-hover:hover {
+    /* Functionality: Maintains hover:bg-white/8 and hover:border-white/20 */
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 hover:shadow-glow-sm active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply text-white font-medium px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .btn-ghost:hover {
+    /* Functionality: Maintains bg-white/10 and border-white/20 */
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-danger {
+    @apply text-rose-400 font-semibold px-5 py-2.5 rounded-xl transition-all duration-200;
+    /* Functionality: Maintains bg-rose-500/20 and border-rose-500/30 */
+    background-color: rgba(244, 63, 94, 0.2);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+  }
+  .btn-danger:hover {
+    /* Functionality: Maintains hover:bg-rose-500/30 */
+    background-color: rgba(244, 63, 94, 0.3);
+  }
+
+  .input-field {
+    @apply w-full rounded-xl px-4 py-3 text-white transition-all duration-200 text-sm;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .input-field::placeholder {
+    /* Functionality: Maintains placeholder-white/30 */
+    color: rgba(255, 255, 255, 0.3);
+  }
+  .input-field:focus {
+    @apply outline-none;
+    /* Functionality: Maintains focus:border-primary-500/60 and focus:bg-white/[0.08] */
+    border-color: rgba(99, 102, 241, 0.6);
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .stat-card {
+    @apply glass-card p-5 flex flex-col gap-3;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply badge text-emerald-400;
+    /* Functionality: Maintains bg-emerald-500/15 and border-emerald-500/20 */
+    background-color: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  .badge-warning {
+    @apply badge text-amber-400;
+    /* Functionality: Maintains bg-amber-500/15 and border-amber-500/20 */
+    background-color: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+
+  .badge-danger {
+    @apply badge text-rose-400;
+    /* Functionality: Maintains bg-rose-500/15 and border-rose-500/20 */
+    background-color: rgba(244, 63, 94, 0.15);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+  }
+
+  .badge-info {
+    @apply badge text-primary-400;
+    /* Functionality: Maintains bg-primary-500/15 and border-primary-500/20 */
+    background-color: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+  }
+
+  .page-title {
+    @apply font-display text-2xl font-bold text-white;
+  }
+
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-widest;
+    /* Functionality: Maintains text-white/40 */
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .table-header {
+    @apply text-xs font-semibold uppercase tracking-wider px-4 py-3;
+    /* Functionality: Maintains text-white/40 */
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .table-cell {
+    @apply px-4 py-4 text-sm;
+    /* Functionality: Maintains text-white/80 */
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .table-row {
+    @apply transition-colors duration-150;
+    /* Functionality: Maintains border-t border-white/5 */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .table-row:hover {
+    /* Functionality: Maintains hover:bg-white/3 */
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  .nav-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer;
+    /* Functionality: Maintains text-white/60 */
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .nav-link:hover {
+    @apply text-white;
+    /* Functionality: Maintains hover:bg-white/8 */
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .nav-link-active {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white shadow-glow-sm;
+    /* Functionality: Maintains bg-primary-600/80 */
+    background-color: rgba(79, 70, 229, 0.8);
+  }
+
+  .skeleton {
+    @apply rounded-xl animate-pulse;
+    /* Functionality: Maintains bg-white/5 */
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .font-num {
+    @apply font-mono tabular-nums;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-mesh {
+    background-image: radial-gradient(at 40% 20%, hsla(240,100%,74%,0.15) 0px, transparent 50%),
+                      radial-gradient(at 80% 0%, hsla(189,100%,56%,0.1) 0px, transparent 50%);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

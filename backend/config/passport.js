@@ -1,0 +1,121 @@
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
+const User = require("../models/User.model");
+const logger = require("../utils/logger");
+
+// --- JWT Strategy ---
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: process.env.JWT_SECRET,
+    },
+    async (payload, done) => {
+      try {
+        const user = await User.findById(payload.id).select("-password -mfaSecret");
+        if (!user || !user.isActive) return done(null, false);
+        return done(null, user);
+      } catch (err) {
+        return done(err, false);
+      }
+    }
+  )
+);
+
+// --- Google OAuth Strategy ---
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,       // ⚠️ FILL in .env
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET, // ⚠️ FILL in .env
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      scope: ["profile", "email"],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const email = profile.emails?.[0]?.value;
+
+        // Single-owner enforcement
+        if (email !== process.env.OWNER_EMAIL) {
+          return done(null, false, { message: "Access denied. This system is restricted to the owner." });
+        }
+
+        let user = await User.findOne({ $or: [{ googleId: profile.id }, { email }] });
+
+        if (!user) {
+          user = await User.create({
+            name: profile.displayName,
+            email,
+            googleId: profile.id,
+            avatar: profile.photos?.[0]?.value,
+            isVerified: true,
+            authProvider: "google",
+          });
+          logger.info(`New owner account created via Google: ${email}`);
+        } else {
+          if (!user.googleId) user.googleId = profile.id;
+          if (!user.avatar) user.avatar = profile.photos?.[0]?.value;
+          await user.save();
+        }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err, false);
+      }
+    }
+  )
+);
+
+// --- Facebook OAuth Strategy ---
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_APP_ID,         // ⚠️ FILL in .env
+      clientSecret: process.env.FACEBOOK_APP_SECRET, // ⚠️ FILL in .env
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      profileFields: ["id", "emails", "name", "picture"],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const email = profile.emails?.[0]?.value;
+
+        if (email !== process.env.OWNER_EMAIL) {
+          return done(null, false, { message: "Access denied. This system is restricted to the owner." });
+        }
+
+        let user = await User.findOne({ $or: [{ facebookId: profile.id }, { email }] });
+
+        if (!user) {
+          user = await User.create({
+            name: `${profile.name.givenName} ${profile.name.familyName}`,
+            email,
+            facebookId: profile.id,
+            avatar: profile.photos?.[0]?.value,
+            isVerified: true,
+            authProvider: "facebook",
+          });
+        } else {
+          if (!user.facebookId) user.facebookId = profile.id;
+          await user.save();
+        }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err, false);
+      }
+    }
+  )
+);
+
+passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
