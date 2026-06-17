@@ -30,7 +30,7 @@ app.use(mongoSanitize());
 
 // --- Rate Limiting ---
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 900000,
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS),
   max: parseInt(process.env.RATE_LIMIT_MAX) || 100,
   message: { success: false, message: "Too many requests, please try again later." },
   standardHeaders: true,
@@ -42,6 +42,7 @@ app.use("/api/", limiter);
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20,
+  skipSuccessfulRequests: true,
   message: { success: false, message: "Too many authentication attempts." },
 });
 app.use("/api/auth/", authLimiter);
@@ -49,7 +50,7 @@ app.use("/api/auth/", authLimiter);
 // --- CORS ---
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://shp-management-ashen.vercel.app",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],

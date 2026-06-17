@@ -8,10 +8,10 @@ const logger = require("../utils/logger");
 
 // --- Token Generators ---
 const generateAccessToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || "15m" });
+  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
 
 const generateRefreshToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.JWT_REFRESH_EXPIRE || "7d" });
+  jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.JWT_REFRESH_EXPIRE });
 
 const generateReauthToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET + "_reauth", { expiresIn: "5m" });
