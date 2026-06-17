@@ -3,12 +3,12 @@ const logger = require("./logger");
 
 const createTransporter = () =>
   nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,       // ⚠️ FILL in .env
+    host: process.env.EMAIL_HOST,       
     port: parseInt(process.env.EMAIL_PORT) || 587,
     secure: parseInt(process.env.EMAIL_PORT) === 465,
     auth: {
-      user: process.env.EMAIL_USER,     // ⚠️ FILL in .env
-      pass: process.env.EMAIL_PASS,     // ⚠️ FILL in .env
+      user: process.env.EMAIL_USER,     
+      pass: process.env.EMAIL_PASS,     
     },
   });
 
