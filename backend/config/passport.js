@@ -38,11 +38,6 @@ passport.use(
       try {
         const email = profile.emails?.[0]?.value;
 
-        // Single-owner enforcement
-        if (email !== process.env.OWNER_EMAIL) {
-          return done(null, false, { message: "Access denied. This system is restricted to the owner." });
-        }
-
         let user = await User.findOne({ $or: [{ googleId: profile.id }, { email }] });
 
         if (!user) {
@@ -81,10 +76,6 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         const email = profile.emails?.[0]?.value;
-
-        if (email !== process.env.OWNER_EMAIL) {
-          return done(null, false, { message: "Access denied. This system is restricted to the owner." });
-        }
 
         let user = await User.findOne({ $or: [{ facebookId: profile.id }, { email }] });
 
