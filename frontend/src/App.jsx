@@ -13,6 +13,8 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import MFAVerifyPage from "./pages/MFAVerifyPage";
 import OAuthCallbackPage from "./pages/OAuthCallbackPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsOfServicePage from "./pages/TermsOfServicePage";
 
 // App Pages
 import DashboardPage from "./pages/DashboardPage";
@@ -49,6 +51,8 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/mfa-verify" element={<MFAVerifyPage />} />
         <Route path="/oauth-callback" element={<OAuthCallbackPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
 
         {/* Protected App Routes */}
         <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
